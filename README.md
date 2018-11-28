@@ -20,7 +20,7 @@ In the build.gradle of your app module add:
 
 ```gradle
 dependencies {
-    compile 'com.rocky.contactfetcher:contactfetcher:0.1.0'
+    compile 'com.rocky.contactfetcher:contactfetcher:x.x.x'
 }
 ```
 
