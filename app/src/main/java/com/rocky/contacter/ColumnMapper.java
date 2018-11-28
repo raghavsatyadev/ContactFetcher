@@ -19,7 +19,6 @@ package com.rocky.contacter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 
 /**
@@ -52,9 +51,6 @@ class ColumnMapper {
     }
 
     static void mapPhoneNumber(Cursor cursor, Contact contact, int columnIndex) {
-        if (contact.displayName.contains("Wilson")) {
-            Log.d("Wilson", "mapPhoneNumber: ");
-        }
         String phoneNumber = cursor.getString(columnIndex);
         if (!TextUtils.isEmpty(phoneNumber)) {
             phoneNumber = Helper.getFormattedNumber(phoneNumber);

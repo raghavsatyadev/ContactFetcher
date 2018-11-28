@@ -26,11 +26,6 @@ import android.util.LongSparseArray;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 
-/**
- * Android contacts as rx observable.
- *
- * @author Ulrich Raab
- */
 public class RxContacts {
 
     private static final String[] PROJECTION = {

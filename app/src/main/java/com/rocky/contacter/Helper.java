@@ -75,15 +75,17 @@ public class Helper {
         return true;
     }
 
-    public static boolean matchPhoneNumber(String userPhone, String contactNumber, String countryCode) {
+    public static boolean matchPhoneNumber(String listPhone, String singlePhone, String countryCode) {
         if (countryCode == null) countryCode = "";
-        if (userPhone.equals(contactNumber)) return true;
-        userPhone = userPhone.replace(countryCode, "");
-        if (userPhone.equals(contactNumber)) return true;
-        if (userPhone.length() <= contactNumber.length()) {
-            contactNumber = contactNumber.substring(contactNumber.length() - userPhone.length());
-            return contactNumber.equals(userPhone);
+        if (listPhone.equals(singlePhone)) return true;
+        listPhone = listPhone.replace(countryCode, "");
+        if (listPhone.equals(singlePhone)) return true;
+        if (listPhone.length() <= singlePhone.length()) {
+            singlePhone = singlePhone.substring(singlePhone.length() - listPhone.length());
+            return singlePhone.equals(listPhone);
+        } else {
+            listPhone = listPhone.substring(listPhone.length() - singlePhone.length());
+            return singlePhone.equals(listPhone);
         }
-        return false;
     }
 }
