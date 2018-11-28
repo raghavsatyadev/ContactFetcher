@@ -1,5 +1,6 @@
 package com.rocky.contacter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +21,16 @@ public abstract class GenRecyclerAdapter
         return myClickListener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return creatingViewHolder(parent, viewType);
     }
 
     protected abstract ViewHolder creatingViewHolder(ViewGroup parent, int viewType);
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         bindingViewHolder(holder, position);
     }
 

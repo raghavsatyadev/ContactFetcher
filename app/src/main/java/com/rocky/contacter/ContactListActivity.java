@@ -14,7 +14,6 @@ import java.util.List;
 
 public class ContactListActivity extends AppCompatActivity {
 
-    private static final String TAG = ContactListActivity.class.getCanonicalName();
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private ContactListAdapter adapter;
@@ -86,13 +85,11 @@ public class ContactListActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PermissionUtil.PermissionCode.READ_CONTACTS:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager
-                        .PERMISSION_GRANTED) {
-                    checkPermissionLocal();
-                }
-                break;
+        if (requestCode == PermissionUtil.PermissionCode.READ_CONTACTS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager
+                    .PERMISSION_GRANTED) {
+                checkPermissionLocal();
+            }
         }
     }
 }

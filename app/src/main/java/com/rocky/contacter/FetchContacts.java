@@ -58,7 +58,7 @@ public class FetchContacts extends AsyncTask<Void, Object, Void> {
 
                     ArrayList<String> phones = addPhone(cursor, cr, id);
 
-                    contacts = Helper.verifyContact(contacts, new Contact(name, emails, phones));
+                    Helper.verifyAndAddContact(contacts, new Contact(name, emails, phones));
 
                     updateContacts(contacts, totalContact, false);
                 }
@@ -82,7 +82,7 @@ public class FetchContacts extends AsyncTask<Void, Object, Void> {
 
     private ArrayList<String> addPhone(Cursor cursor, ContentResolver cr, String id) {
         ArrayList<String> phones = new ArrayList<>();
-        Integer hasPhone = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+        int hasPhone = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
         if (hasPhone > 0) {
             Cursor cp = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);

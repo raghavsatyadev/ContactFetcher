@@ -20,13 +20,12 @@ public class Helper {
         clipboard.setPrimaryClip(clip);
     }
 
-    public static ArrayList<Contact> verifyContact(ArrayList<Contact> contacts, Contact contact) {
+    public static void verifyAndAddContact(ArrayList<Contact> contacts, Contact contact) {
         if (((contact.emails != null && !contact.emails.isEmpty()) ||
                 (contact.phoneNumbers != null && !contact.phoneNumbers.isEmpty()))
                 && !TextUtils.isEmpty(contact.name)) {
             contacts.add(contact);
         }
-        return contacts;
     }
 
     public static String getFormattedNumber(String number) {
@@ -67,14 +66,14 @@ public class Helper {
         return true;
     }
 
-    public static boolean matchPhoneNumber(String firebaseUserPhone, String contactNumber, String countryCode) {
+    public static boolean matchPhoneNumber(String userPhone, String contactNumber, String countryCode) {
         if (countryCode == null) countryCode = "";
-        if (firebaseUserPhone.equals(contactNumber)) return true;
-        firebaseUserPhone = firebaseUserPhone.replace(countryCode, "");
-        if (firebaseUserPhone.equals(contactNumber)) return true;
-        if (firebaseUserPhone.length() <= contactNumber.length()) {
-            contactNumber = contactNumber.substring(contactNumber.length() - firebaseUserPhone.length());
-            return contactNumber.equals(firebaseUserPhone);
+        if (userPhone.equals(contactNumber)) return true;
+        userPhone = userPhone.replace(countryCode, "");
+        if (userPhone.equals(contactNumber)) return true;
+        if (userPhone.length() <= contactNumber.length()) {
+            contactNumber = contactNumber.substring(contactNumber.length() - userPhone.length());
+            return contactNumber.equals(userPhone);
         }
         return false;
     }
