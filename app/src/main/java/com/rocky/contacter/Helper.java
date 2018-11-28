@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class Helper {
     private static ClipboardManager clipboard;
+    private final static String COUNTRY_CODE = "IN";
 
     public static void copyToClipboard(String text, Context context) {
         if (clipboard == null)
@@ -21,16 +22,20 @@ public class Helper {
     }
 
     public static void verifyAndAddContact(ArrayList<Contact> contacts, Contact contact) {
-        if (((contact.emails != null && !contact.emails.isEmpty()) ||
-                (contact.phoneNumbers != null && !contact.phoneNumbers.isEmpty()))
-                && !TextUtils.isEmpty(contact.name)) {
+        if (verifyAndAddContact(contact)) {
             contacts.add(contact);
         }
     }
 
+    public static boolean verifyAndAddContact(Contact contact) {
+        return (contact.emails != null && !contact.emails.isEmpty() ||
+                contact.phoneNumbers != null && !contact.phoneNumbers.isEmpty())
+                && !TextUtils.isEmpty(contact.displayName);
+    }
+
     public static String getFormattedNumber(String number) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            number = PhoneNumberUtils.formatNumber(number, "IN").replaceAll("\\s+", "");
+            number = PhoneNumberUtils.formatNumber(number, COUNTRY_CODE).replaceAll("\\s+", "");
         } else {
             number = PhoneNumberUtils.formatNumber(number).replaceAll("\\s+", "");
         }
@@ -38,7 +43,9 @@ public class Helper {
     }
 
     public static boolean verifyEmail(ArrayList<String> emails, String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches() && isUniqueEmail(emails, email);
+        return !TextUtils.isEmpty(email) &&
+                Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
+                isUniqueEmail(emails, email);
     }
 
     public static boolean isUniqueEmail(ArrayList<String> emails, String email) {
@@ -52,7 +59,9 @@ public class Helper {
     }
 
     public static boolean verifyPhone(ArrayList<String> phoneNumbers, String phone) {
-        return Patterns.PHONE.matcher(phone).matches() && isUniquePhoneNumber(phoneNumbers, phone);
+        return !TextUtils.isEmpty(phone) &&
+                Patterns.PHONE.matcher(phone).matches() &&
+                isUniquePhoneNumber(phoneNumbers, phone);
     }
 
     public static boolean isUniquePhoneNumber(ArrayList<String> phoneNumbers, String phone) {

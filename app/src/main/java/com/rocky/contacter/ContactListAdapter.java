@@ -23,11 +23,7 @@ public class ContactListAdapter extends GenRecyclerAdapter<ContactListAdapter.Da
 
     @Override
     protected void bindingViewHolder(DataObjectHolder holder, int position) {
-        holder.txtRowContactName.setText(getItem(position).name);
-    }
-
-    public void saveForLater(ArrayList<Contact> contacts) {
-        this.saveForLaterContacts.addAll(contacts);
+        holder.txtRowContactName.setText(getItem(position).displayName);
     }
 
     public void loadSaveForLaterContacts() {

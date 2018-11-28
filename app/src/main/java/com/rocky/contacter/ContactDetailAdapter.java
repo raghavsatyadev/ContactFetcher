@@ -26,7 +26,7 @@ public class ContactDetailAdapter extends GenRecyclerAdapter<ContactDetailAdapte
     }
 
     public void setContact(Contact contact) {
-        addItem(contact.name);
+        addItem(contact.displayName);
         for (int i = 0; i < contact.emails.size(); i++) {
             addItem(contact.emails.get(i));
         }

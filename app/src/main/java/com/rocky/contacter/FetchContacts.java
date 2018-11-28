@@ -1,10 +1,8 @@
 package com.rocky.contacter;
 
-import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 
@@ -14,9 +12,7 @@ import java.util.List;
 public class FetchContacts extends AsyncTask<Void, Object, Void> {
     private static final String TAG = "FetchContacts";
     private final int REFRESH_COUNT = 50;
-    @SuppressLint("ObsoleteSdkInt")
-    private final String DISPLAY_NAME = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
-            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY : ContactsContract.Contacts.DISPLAY_NAME;
+    private final String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
 
     private final String FILTER = DISPLAY_NAME + " NOT LIKE '%@%'";
 
@@ -58,7 +54,7 @@ public class FetchContacts extends AsyncTask<Void, Object, Void> {
 
                     ArrayList<String> phones = addPhone(cursor, cr, id);
 
-                    Helper.verifyAndAddContact(contacts, new Contact(name, emails, phones));
+//                    Helper.verifyAndAddContact(contacts, new Contact(name, emails, phones));
 
                     updateContacts(contacts, totalContact, false);
                 }

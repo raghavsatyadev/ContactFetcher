@@ -10,7 +10,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ContactListActivity extends AppCompatActivity {
 
@@ -53,24 +57,31 @@ public class ContactListActivity extends AppCompatActivity {
     }
 
     private void getContacts() {
-        progressBar.setVisibility(View.VISIBLE);
-        new FetchContacts(new FetchContacts.ContactEventListener() {
-            @Override
-            public void onComplete() {
-                progressBar.setProgress(0);
-                progressBar.setVisibility(View.GONE);
-            }
+        RxContacts.fetch(this)
+                .sorted()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Contact>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-            @Override
-            public void onProgressUpdated(Integer progress, List<Contact> contacts, Integer oldContactsSize) {
-                progressBar.setProgress(progress);
-                if (isClicked) {
-                    adapter.saveForLater(new ArrayList<>(contacts));
-                } else {
-                    adapter.addAll(new ArrayList<>(contacts));
-                }
-            }
-        }).execute();
+                    }
+
+                    @Override
+                    public void onNext(Contact contact) {
+                        adapter.addItem(contact);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
