@@ -1,4 +1,4 @@
-package com.rocky.contacter;
+package com.rocky.contactfetcher;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;

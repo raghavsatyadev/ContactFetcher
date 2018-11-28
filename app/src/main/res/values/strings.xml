@@ -1,4 +1,3 @@
 <resources>
     <string name="app_name">Contacter</string>
-    <string name="read_contact_permission_title">Read Contact Permission is necessary</string>
 </resources>

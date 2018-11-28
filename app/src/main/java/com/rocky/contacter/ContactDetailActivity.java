@@ -11,6 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.rocky.contactfetcher.Contact;
+import com.rocky.contactfetcher.Helper;
+
 import java.util.ArrayList;
 
 public class ContactDetailActivity extends AppCompatActivity {

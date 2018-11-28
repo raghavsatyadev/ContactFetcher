@@ -13,21 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.rocky.contacter;
+package com.rocky.contactfetcher;
 
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.LongSparseArray;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ContactFetcher {
-
     private static final String[] PROJECTION = {
             ContactsContract.Data.CONTACT_ID,
             ContactsContract.Data.DISPLAY_NAME_PRIMARY,
@@ -38,14 +46,41 @@ public class ContactFetcher {
             ContactsContract.Data.MIMETYPE,
             ContactsContract.Data.IN_VISIBLE_GROUP
     };
+    private static ContactListener<Contact> contactListener;
+
     private final String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
 
     private final String FILTER = DISPLAY_NAME + " NOT LIKE '%@%'";
 
     private ContentResolver resolver;
+    private static CompositeDisposable compositeDisposable;
 
     private ContactFetcher(@NonNull Context context) {
         resolver = context.getContentResolver();
+    }
+
+    public static void getContacts(Fragment fragment, ContactListener<Contact> contactListener) {
+        ContactFetcher.contactListener = contactListener;
+        if (PermissionUtil.checkPermission(fragment.getContext(), PermissionUtil.Permissions.READ_CONTACTS)) {
+            fetch(fragment.getContext());
+        } else {
+            PermissionUtil.getPermission(fragment, PermissionUtil.Permissions.READ_CONTACTS,
+                    PermissionUtil.PermissionCode.READ_CONTACTS,
+                    fragment.getString(R.string.read_contact_permission_title),
+                    null);
+        }
+    }
+
+    public static void getContacts(Activity activity, ContactListener<Contact> contactListener) {
+        ContactFetcher.contactListener = contactListener;
+        if (PermissionUtil.checkPermission(activity, PermissionUtil.Permissions.READ_CONTACTS)) {
+            fetch(activity);
+        } else {
+            PermissionUtil.getPermission(activity, PermissionUtil.Permissions.READ_CONTACTS,
+                    PermissionUtil.PermissionCode.READ_CONTACTS,
+                    activity.getString(R.string.read_contact_permission_title),
+                    null);
+        }
     }
 
     /**
@@ -54,10 +89,42 @@ public class ContactFetcher {
      * @param context The context.
      * @return Observable that emits contacts on success.
      */
-    public static Observable<Contact> fetch(@NonNull final Context context) {
-        return Observable.create(emitter -> {
-            new ContactFetcher(context).fetch(emitter);
-        });
+    private static void fetch(@NonNull final Context context) {
+        Observable.create((ObservableOnSubscribe<Contact>)
+                emitter -> new ContactFetcher(context).fetch(emitter))
+                .sorted()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Contact>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        getCompositeDisposable().add(d);
+                    }
+
+                    @Override
+                    public void onNext(Contact contact) {
+                        if (contactListener != null) contactListener.onNext(contact);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (contactListener != null) contactListener.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (contactListener != null) contactListener.onComplete();
+                    }
+                });
+    }
+
+    public static void resolvePermissionResult(Activity activity, int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PermissionUtil.PermissionCode.READ_CONTACTS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager
+                    .PERMISSION_GRANTED) {
+                getContacts(activity, contactListener);
+            }
+        }
     }
 
     private void fetch(ObservableEmitter<Contact> subscriber) {
@@ -116,6 +183,25 @@ public class ContactFetcher {
                 subscriber.onNext(contact);
         }
         subscriber.onComplete();
+    }
+
+    /**
+     * get {@link CompositeDisposable} for RXJava
+     *
+     * @return {@link CompositeDisposable}
+     */
+    private static CompositeDisposable getCompositeDisposable() {
+        if (compositeDisposable == null) {
+            compositeDisposable = new CompositeDisposable();
+        }
+        if (compositeDisposable.isDisposed()) compositeDisposable = new CompositeDisposable();
+        return compositeDisposable;
+    }
+
+    public static void stop() {
+        if (compositeDisposable != null) {
+            compositeDisposable.dispose();
+        }
     }
 
     private Cursor createCursor() {

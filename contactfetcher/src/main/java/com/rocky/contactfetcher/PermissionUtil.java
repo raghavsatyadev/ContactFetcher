@@ -1,4 +1,4 @@
-package com.rocky.contacter;
+package com.rocky.contactfetcher;
 // using this class
 
 //permissionGranted = PermissionUtil.getPermission(activity, PermissionUtil.Permissions.READ_PHONE_STATE,
@@ -111,10 +111,6 @@ public class PermissionUtil {
     public static boolean checkPermission(Context context, String permission) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
         return currentAPIVersion < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    public interface PermissionMessage {
-        String READ_CONTACTS = ResourceUtils.getString(R.string.read_contact_permission_title);
     }
 
     public interface Permissions {

@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rocky.contactfetcher.Contact;
+
 import java.util.ArrayList;
 
 public class ContactDetailAdapter extends GenRecyclerAdapter<ContactDetailAdapter.DataObjectHolder, String> {
