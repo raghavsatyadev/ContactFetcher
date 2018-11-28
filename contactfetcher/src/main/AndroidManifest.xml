@@ -1,1 +1,5 @@
-<manifest package="com.rocky.contactfetcher" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rocky.contactfetcher">
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+</manifest>
