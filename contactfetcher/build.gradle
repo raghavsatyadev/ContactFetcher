@@ -1,12 +1,33 @@
 apply plugin: 'com.android.library'
+
+ext {
+    bintrayRepo = 'Maven'
+    bintrayName = 'ContactFetcher'
+
+    publishedGroupId = 'com.rocky.contactfetcher'
+    libraryName = 'ContactFetcher'
+    artifact = 'contactfetcher'
+
+    libraryDescription = 'An app to read all contacts with emails and mobile numbers. It also supprots multiple emails and mobile numbers.'
+
+    siteUrl = 'https://github.com/raghavsatyadev/ContactFetcher'
+    gitUrl = 'https://github.com/raghavsatyadev/ContactFetcher.git'
+
+    libraryVersion = "1.1"
+
+    developerId = 'raghav'
+    developerName = 'Raghav Satyadev'
+    developerEmail = 'raghavsatyadev@gmail.com'
+}
+
 android {
     compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName libraryVersion
     }
 
     buildTypes {
@@ -31,25 +52,6 @@ dependencies {
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-ext {
-    bintrayRepo = 'Maven'
-    bintrayName = 'ContactFetcher'
-
-    publishedGroupId = 'com.rocky.contactfetcher'
-    libraryName = 'ContactFetcher'
-    artifact = 'contactfetcher'
-
-    libraryDescription = 'An app to read all contacts with emails and mobile numbers. It also supprots multiple emails and mobile numbers.'
-
-    siteUrl = 'https://github.com/raghavsatyadev/ContactFetcher'
-    gitUrl = 'https://github.com/raghavsatyadev/ContactFetcher.git'
-
-    libraryVersion = '0.1.0'
-
-    developerId = 'raghav'
-    developerName = 'Raghav Satyadev'
-    developerEmail = 'raghavsatyadev@gmail.com'
-}
 
 group = publishedGroupId
 version = libraryVersion
