@@ -20,12 +20,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
-
-/**
- * TODO Write javadoc
- *
- * @author Ulrich Raab
- */
 class ColumnMapper {
 
     // Utility class -> No instances allowed
