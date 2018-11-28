@@ -1,7 +1,7 @@
 # ContactFetcher
 An app to read all contacts with emails and mobile numbers. It also supports multiple emails and mobile numbers.
 
-**Current version:** [ ![Download](https://api.bintray.com/packages/raghavsatyadev/Maven/ContactFetcher/images/download.svg?version=0.1.0) ](https://bintray.com/raghavsatyadev/Maven/ContactFetcher/0.1.0/link)
+**Current version:**  <a href='https://bintray.com/raghavsatyadev/Maven/ContactFetcher/_latestVersion'><img src='https://api.bintray.com/packages/raghavsatyadev/Maven/ContactFetcher/images/download.svg'></a>
 
 # Setup
 To use this library your minSdkVersion must be >= 16.
