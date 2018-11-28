@@ -26,7 +26,7 @@ import android.util.LongSparseArray;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 
-public class RxContacts {
+public class ContactFetcher {
 
     private static final String[] PROJECTION = {
             ContactsContract.Data.CONTACT_ID,
@@ -44,7 +44,7 @@ public class RxContacts {
 
     private ContentResolver resolver;
 
-    private RxContacts(@NonNull Context context) {
+    private ContactFetcher(@NonNull Context context) {
         resolver = context.getContentResolver();
     }
 
@@ -56,7 +56,7 @@ public class RxContacts {
      */
     public static Observable<Contact> fetch(@NonNull final Context context) {
         return Observable.create(emitter -> {
-            new RxContacts(context).fetch(emitter);
+            new ContactFetcher(context).fetch(emitter);
         });
     }
 

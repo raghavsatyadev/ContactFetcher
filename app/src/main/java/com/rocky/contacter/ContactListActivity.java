@@ -57,7 +57,7 @@ public class ContactListActivity extends AppCompatActivity {
     }
 
     private void getContacts() {
-        RxContacts.fetch(this)
+        ContactFetcher.fetch(this)
                 .sorted()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
