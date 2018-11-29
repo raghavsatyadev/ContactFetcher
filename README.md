@@ -9,50 +9,54 @@ To use this library your minSdkVersion must be >= 16.
 In the build.gradle of your project add:
 
 ```gradle
-repositories {
-    maven {
-        url  "https://dl.bintray.com/raghavsatyadev/Maven" 
+    repositories {
+        maven {
+            url  "https://dl.bintray.com/raghavsatyadev/Maven" 
+        }
     }
-}
 ```
 
 In the build.gradle of your app module add:
 
 ```gradle
-dependencies {
-    compile 'com.rocky.contactfetcher:contactfetcher:x.x.x'
-}
+    dependencies {
+        compile 'com.rocky.contactfetcher:contactfetcher:x.x.x'
+    }
 ```
 
 # Example
 
 ```java
-ContactFetcher.getContacts(this, new ContactListener<Contact>() {
-      @Override
-      public void onNext(Contact contact) {
-          // add contacts to list
-      }
 
-      @Override
-      public void onError(Throwable error) {
-          // log the error
-      }
+    ContactFetcher.getContacts(this, new ContactListener<Contact>() {
+          @Override
+          public void onNext(Contact contact) {
+              // add contacts to list
+          }
 
-      @Override
-      public void onComplete() {
-         // process complete
-      }
-  });
+          @Override
+            public void onError(Throwable error) {
+              // log the error
+          }
+
+          @Override
+          public void onComplete() {
+             // process complete
+          }
+      });
+
 ```
 
 in onRequestPermissionsResult() method
 
 ```java
-@Override
-public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                       @NonNull int[] grantResults) {
-    ContactFetcher.resolvePermissionResult(this, requestCode, permissions, grantResults);
-}
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        ContactFetcher.resolvePermissionResult(this, requestCode, permissions, grantResults);
+    }
+
 ```
 
 This library is highly inspired by **RXContacts :**  https://github.com/UlrichRaab/rx-contacts
