@@ -30,7 +30,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_detail);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_details);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ContactDetailAdapter(new ArrayList<String>());

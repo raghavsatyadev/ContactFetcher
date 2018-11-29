@@ -35,6 +35,7 @@ public class ContactFetcher {
     private final String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
 
     private final String FILTER = DISPLAY_NAME + " NOT LIKE '%@%'";
+    private final String ORDER = String.format("%1$s COLLATE NOCASE", DISPLAY_NAME);
 
     private ContentResolver resolver;
     private static CompositeDisposable compositeDisposable;
@@ -79,6 +80,36 @@ public class ContactFetcher {
         }
     }
 
+    /**
+     * for resolving permission result
+     */
+    public static void resolvePermissionResult(Activity activity,
+                                               int requestCode,
+                                               String[] permissions,
+                                               int[] grantResults) {
+        if (requestCode == PermissionUtil.PermissionCode.READ_CONTACTS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager
+                    .PERMISSION_GRANTED) {
+                getContacts(activity, contactListener);
+            }
+        }
+    }
+
+    /**
+     * for resolving permission result
+     */
+    public static void resolvePermissionResult(Fragment fragment,
+                                               int requestCode,
+                                               String[] permissions,
+                                               int[] grantResults) {
+        if (requestCode == PermissionUtil.PermissionCode.READ_CONTACTS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager
+                    .PERMISSION_GRANTED) {
+                getContacts(fragment, contactListener);
+            }
+        }
+    }
+
     private static void fetch(@NonNull final Context context) {
         Observable.create((ObservableOnSubscribe<Contact>)
                 emitter -> new ContactFetcher(context).fetch(emitter))
@@ -108,34 +139,14 @@ public class ContactFetcher {
                 });
     }
 
-    /**
-     * for resolving permission result
-     */
-    public static void resolvePermissionResult(Activity activity,
-                                               int requestCode,
-                                               String[] permissions,
-                                               int[] grantResults) {
-        if (requestCode == PermissionUtil.PermissionCode.READ_CONTACTS) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager
-                    .PERMISSION_GRANTED) {
-                getContacts(activity, contactListener);
-            }
-        }
-    }
-
-    /**
-     * for resolving permission result
-     */
-    public static void resolvePermissionResult(Fragment fragment,
-                                               int requestCode,
-                                               String[] permissions,
-                                               int[] grantResults) {
-        if (requestCode == PermissionUtil.PermissionCode.READ_CONTACTS) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager
-                    .PERMISSION_GRANTED) {
-                getContacts(fragment, contactListener);
-            }
-        }
+    private Cursor createCursor() {
+        return resolver.query(
+                ContactsContract.Data.CONTENT_URI,
+                PROJECTION,
+                FILTER,
+                null,
+                ContactsContract.Data.CONTACT_ID
+        );
     }
 
     private void fetch(ObservableEmitter<Contact> subscriber) {
@@ -216,15 +227,5 @@ public class ContactFetcher {
         if (compositeDisposable != null) {
             compositeDisposable.dispose();
         }
-    }
-
-    private Cursor createCursor() {
-        return resolver.query(
-                ContactsContract.Data.CONTENT_URI,
-                PROJECTION,
-                FILTER,
-                null,
-                ContactsContract.Data.CONTACT_ID
-        );
     }
 }

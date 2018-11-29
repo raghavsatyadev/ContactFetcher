@@ -22,10 +22,10 @@ public class ContactListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_list);
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_list);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ContactListAdapter(new ArrayList<>());
+        adapter = new ContactListAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener((position, v) -> {
             Bundle bundle = new Bundle();
