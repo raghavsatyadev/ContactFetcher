@@ -30,17 +30,17 @@ dependencies {
 ContactFetcher.getContacts(this, new ContactListener<Contact>() {
       @Override
       public void onNext(Contact contact) {
-          adapter.addItem(contact);
+          // add contacts to list
       }
 
       @Override
       public void onError(Throwable error) {
-          Log.e(TAG, "onError: ", error);
+          // log the error
       }
 
       @Override
       public void onComplete() {
-
+         // process complete
       }
   });
 ```
