@@ -50,7 +50,8 @@ public class ContactFetcher {
     /**
      * get contacts stored on phone. returns all details listed in {@link Contact}
      *
-     * @param contactListener for receiving contacts {@link ContactListener<Contact>}
+     * @param fragment
+     * @param contactListener for receiving contacts {@link ContactListener}
      */
     public static void getContacts(Fragment fragment, ContactListener<Contact> contactListener) {
         ContactFetcher.contactListener = contactListener;
@@ -66,10 +67,10 @@ public class ContactFetcher {
 
     /**
      * Fetches all contacts from the contacts apps and social networking apps.
-     * <p>
      * returns all details listed in {@link Contact}
      *
-     * @param contactListener for receiving contacts {@link ContactListener<Contact>}
+     * @param activity
+     * @param contactListener for receiving contacts {@link ContactListener}
      */
     public static void getContacts(Activity activity, ContactListener<Contact> contactListener) {
         ContactFetcher.contactListener = contactListener;
@@ -85,6 +86,11 @@ public class ContactFetcher {
 
     /**
      * for resolving permission result
+     *
+     * @param activity
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
      */
     public static void resolvePermissionResult(Activity activity,
                                                int requestCode,
@@ -100,6 +106,11 @@ public class ContactFetcher {
 
     /**
      * for resolving permission result
+     *
+     * @param fragment
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
      */
     public static void resolvePermissionResult(Fragment fragment,
                                                int requestCode,
