@@ -40,7 +40,7 @@ public class ContactListAdapter extends GenRecyclerAdapter<ContactListAdapter.Da
         holder.txtContactInitial.setVisibility(!isImagePresent ? View.VISIBLE : View.GONE);
         if (!isImagePresent) {
             if (!TextUtils.isEmpty(item.displayName))
-                holder.txtContactInitial.setText(String.valueOf(item.displayName.charAt(0)));
+                holder.txtContactInitial.setText(String.valueOf(item.displayName.charAt(0)).toUpperCase());
         } else {
             GlideRequest<Drawable> load = GlideApp.with(activity).load(item.photo);
             if (item.thumbnail != null && !TextUtils.isEmpty(item.thumbnail.toString())) {

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.LongSparseArray;
 
 import io.reactivex.Observable;
@@ -35,7 +36,6 @@ public class ContactFetcher {
     private final String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
 
     private final String FILTER = DISPLAY_NAME + " NOT LIKE '%@%'";
-    private final String ORDER = String.format("%1$s COLLATE NOCASE", DISPLAY_NAME);
 
     private ContentResolver resolver;
     private static CompositeDisposable compositeDisposable;
@@ -113,6 +113,7 @@ public class ContactFetcher {
     private static void fetch(@NonNull final Context context) {
         Observable.create((ObservableOnSubscribe<Contact>)
                 emitter -> new ContactFetcher(context).fetch(emitter))
+                .filter(contact -> !TextUtils.isEmpty(contact.displayName))
                 .sorted()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
