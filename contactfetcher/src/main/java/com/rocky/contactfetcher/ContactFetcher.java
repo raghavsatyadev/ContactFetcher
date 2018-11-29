@@ -5,10 +5,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.LongSparseArray;
 
 import io.reactivex.Observable;
@@ -31,6 +33,7 @@ public class ContactFetcher {
             ContactsContract.Data.MIMETYPE,
             ContactsContract.Data.IN_VISIBLE_GROUP
     };
+    private static final String TAG = ContactFetcher.class.getCanonicalName();
     private static ContactListener<Contact> contactListener;
 
     private final String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY;
@@ -148,6 +151,25 @@ public class ContactFetcher {
                 null,
                 ContactsContract.Data.CONTACT_ID
         );
+    }
+
+    public void deleteContactById(long id) {
+        Cursor cur = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, ContactsContract.Contacts._ID + "="
+                + id, null, null);
+        if (cur != null) {
+            while (cur.moveToNext()) {
+                try {
+                    String lookupKey = cur.getString(cur
+                            .getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
+                    Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI,
+                            lookupKey);
+                    resolver.delete(uri, ContactsContract.Contacts._ID + "=" + id, null);
+                } catch (Exception e) {
+                    Log.e(TAG, "deleteContactById: ", e);
+                }
+            }
+            cur.close();
+        }
     }
 
     private void fetch(ObservableEmitter<Contact> subscriber) {
