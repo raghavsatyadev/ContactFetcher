@@ -18,6 +18,10 @@ ext {
     developerId = 'raghav'
     developerName = 'Raghav Satyadev'
     developerEmail = 'raghavsatyadev@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
 }
 
 android {
@@ -55,7 +59,6 @@ apply plugin: 'com.jfrog.bintray'
 
 group = publishedGroupId
 version = libraryVersion
-
 install {
     repositories.mavenInstaller {
         pom.project {
@@ -67,6 +70,12 @@ install {
             description libraryDescription
             url siteUrl
 
+            licenses {
+                license {
+                    name licenseName
+                    url licenseUrl
+                }
+            }
             developers {
                 developer {
                     id developerId
@@ -104,7 +113,7 @@ artifacts {
 }
 
 Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+properties.load(project.rootProject.file('credentials.properties').newDataInputStream())
 
 bintray {
     user = properties.getProperty("bintray.user")
@@ -117,6 +126,7 @@ bintray {
         desc = libraryDescription
         websiteUrl = siteUrl
         vcsUrl = gitUrl
+        licenses = allLicenses
         dryRun = false
         publish = true
         override = false
