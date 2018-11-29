@@ -10,7 +10,7 @@ In the build.gradle of your app module add:
 
 ```gradle
     dependencies {
-        compile 'com.rocky.contactfetcher:contactfetcher:x.x.x'
+        implementation 'com.rocky.contactfetcher:contactfetcher:x.x.x'
     }
 ```
 
