@@ -43,6 +43,11 @@ public class ContactFetcher {
         resolver = context.getContentResolver();
     }
 
+    /**
+     * get contacts stored on phone. returns all details listed in {@link Contact}
+     *
+     * @param contactListener for receiving contacts {@link ContactListener<Contact>}
+     */
     public static void getContacts(Fragment fragment, ContactListener<Contact> contactListener) {
         ContactFetcher.contactListener = contactListener;
         if (PermissionUtil.checkPermission(fragment.getContext(), PermissionUtil.Permissions.READ_CONTACTS)) {
@@ -55,6 +60,13 @@ public class ContactFetcher {
         }
     }
 
+    /**
+     * Fetches all contacts from the contacts apps and social networking apps.
+     * <p>
+     * returns all details listed in {@link Contact}
+     *
+     * @param contactListener for receiving contacts {@link ContactListener<Contact>}
+     */
     public static void getContacts(Activity activity, ContactListener<Contact> contactListener) {
         ContactFetcher.contactListener = contactListener;
         if (PermissionUtil.checkPermission(activity, PermissionUtil.Permissions.READ_CONTACTS)) {
@@ -67,12 +79,6 @@ public class ContactFetcher {
         }
     }
 
-    /**
-     * Fetches all contacts from the contacts apps and social networking apps.
-     *
-     * @param context The context.
-     * @return Observable that emits contacts on success.
-     */
     private static void fetch(@NonNull final Context context) {
         Observable.create((ObservableOnSubscribe<Contact>)
                 emitter -> new ContactFetcher(context).fetch(emitter))
@@ -102,11 +108,32 @@ public class ContactFetcher {
                 });
     }
 
-    public static void resolvePermissionResult(Activity activity, int requestCode, String[] permissions, int[] grantResults) {
+    /**
+     * for resolving permission result
+     */
+    public static void resolvePermissionResult(Activity activity,
+                                               int requestCode,
+                                               String[] permissions,
+                                               int[] grantResults) {
         if (requestCode == PermissionUtil.PermissionCode.READ_CONTACTS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager
                     .PERMISSION_GRANTED) {
                 getContacts(activity, contactListener);
+            }
+        }
+    }
+
+    /**
+     * for resolving permission result
+     */
+    public static void resolvePermissionResult(Fragment fragment,
+                                               int requestCode,
+                                               String[] permissions,
+                                               int[] grantResults) {
+        if (requestCode == PermissionUtil.PermissionCode.READ_CONTACTS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager
+                    .PERMISSION_GRANTED) {
+                getContacts(fragment, contactListener);
             }
         }
     }
@@ -182,6 +209,9 @@ public class ContactFetcher {
         return compositeDisposable;
     }
 
+    /**
+     * stops the process of finding contacts
+     */
     public static void stop() {
         if (compositeDisposable != null) {
             compositeDisposable.dispose();
