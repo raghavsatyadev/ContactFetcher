@@ -6,21 +6,11 @@ An app to read all contacts with emails and mobile numbers. It also supports mul
 # Setup
 To use this library your minSdkVersion must be >= 16.
 
-In the build.gradle of your project add:
-
-```gradle
-    repositories {
-        maven {
-            url  "https://dl.bintray.com/raghavsatyadev/Maven" 
-        }
-    }
-```
-
 In the build.gradle of your app module add:
 
 ```gradle
     dependencies {
-        compile 'com.rocky.contactfetcher:contactfetcher:x.x.x'
+        implementation 'com.rocky.contactfetcher:contactfetcher:x.x.x'
     }
 ```
 
