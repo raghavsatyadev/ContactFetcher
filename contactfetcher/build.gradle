@@ -52,8 +52,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.4'
 }
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 
 if (project.rootProject.file('credentials.properties').exists()) {
     apply from: rootProject.file('bintray.gradle')
