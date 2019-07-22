@@ -1,3 +1,5 @@
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I2I8ZPRJ)
+
 # ContactFetcher
 An app to read all contacts with emails and mobile numbers. It also supports multiple emails and mobile numbers.
 
